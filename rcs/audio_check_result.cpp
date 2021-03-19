@@ -8,10 +8,8 @@
 #include <openssl/sha.h>
 #include <curl/curl.h>
 #include <vector>
-#include "HttpClient.h"
 
 using namespace std;
-using namespace fpnn;
 
 const string HOST = "asafe.ilivedata.com";
 const string URI = "/api/v1/audio/check/result";
