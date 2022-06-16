@@ -27,27 +27,33 @@ string getUtcTime()
     return string(sDestTime);
 }
 
-string urlEncode(const string &value)
+unsigned char toHex(unsigned char x)
 {
-    ostringstream escaped;
-    escaped.fill('0');
-    escaped << hex;
+    return  x > 9 ? x + 55 : x + 48;
+}
 
-    for (string::const_iterator i = value.begin(), n = value.end(); i != n; ++i)
+string urlEncode(const string& str)
+{
+    string strTemp = "";
+    size_t length = str.length();
+    for (size_t i = 0; i < length; i++)
     {
-        string::value_type c = (*i);
-        if (isalnum(c) || c == '-' || c == '_' || c == '.' || c == '~')
+        if (isalnum((unsigned char)str[i]) ||
+            (str[i] == '-') ||
+            (str[i] == '_') ||
+            (str[i] == '.') ||
+            (str[i] == '~'))
+            strTemp += str[i];
+        else if (str[i] == ' ')
+            strTemp += "+";
+        else
         {
-            escaped << c;
-            continue;
+            strTemp += '%';
+            strTemp += toHex((unsigned char)str[i] >> 4);
+            strTemp += toHex((unsigned char)str[i] % 16);
         }
-
-        escaped << uppercase;
-        escaped << '%' << setw(2) << int((unsigned char)c);
-        escaped << nouppercase;
     }
-
-    return escaped.str();
+    return strTemp;
 }
 
 string createSign(const string &data, const string &key)
