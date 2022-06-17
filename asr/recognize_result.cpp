@@ -44,8 +44,6 @@ string urlEncode(const string& str)
             (str[i] == '.') ||
             (str[i] == '~'))
             strTemp += str[i];
-        else if (str[i] == ' ')
-            strTemp += "+";
         else
         {
             strTemp += '%';
