@@ -176,14 +176,27 @@ string sha256(const std::string str)
     return mdString;
 }
 
+string escapeJson(const std::string &s) {
+    std::ostringstream o;
+    for (auto c = s.cbegin(); c != s.cend(); c++) {
+        if (*c == '"' || *c == '\\' || ('\x00' <= *c && *c <= '\x1f')) {
+            o << "\\u"
+              << std::hex << std::setw(4) << std::setfill('0') << static_cast<int>(*c);
+        } else {
+            o << *c;
+        }
+    }
+    return o.str();
+}
+
 string check(const string &text, const string &userId)
 {
     std::stringstream jsonBody;
     jsonBody << "{";
 
     //-- sBase
-    jsonBody << "\"content\":\"" << text << "\",";
-    jsonBody << "\"userId\":\"" << userId << "\"}";
+    jsonBody << "\"content\":\"" << escapeJson(text) << "\",";
+    jsonBody << "\"userId\":\"" << escapeJson(userId) << "\"}";
 
     stringstream stringToSign;
     stringToSign << "POST\n"
