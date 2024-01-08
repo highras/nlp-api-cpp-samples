@@ -181,10 +181,6 @@ bool sendHttpRequest(const string &sign, const string &body, const string &nowTi
 
 string recognize(const string &audio, const string &languageCcode, const string &userId)
 {
-    string profanityFilterStr = "0";
-    if (profanityFilter)
-        profanityFilterStr = "1";
-
     const string codeC = "AMR_WB";
     const int sampleRateHertz = 16000;
 
